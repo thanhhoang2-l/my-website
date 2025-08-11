@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập & Đăng ký</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(44, 62, 80, 0.15);
+            overflow: hidden;
+            width: 370px;
+            max-width: 95vw;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 18px 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #888;
+            background: #f7f7f7;
+            transition: background 0.2s, color 0.2s;
+        }
+        .tab.active {
+            background: #fff;
+            color: #0078d7;
+            border-bottom: 2px solid #0078d7;
+        }
+        .form-section {
+            padding: 32px 28px 24px 28px;
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+        .form-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .form-section input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #f9f9f9;
+            transition: border 0.2s;
+        }
+        .form-section input:focus {
+            border-color: #0078d7;
+            outline: none;
+            background: #fff;
+        }
+        .form-section button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #0078d7 0%, #74ebd5 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+            transition: background 0.2s;
+        }
+        .form-section button:hover {
+            background: linear-gradient(90deg, #005fa3 0%, #74ebd5 100%);
+        }
+        .message {
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 15px;
+            color: #e74c3c;
+            min-height: 20px;
+        }
+        .form-section .success {
+            color: #27ae60;
+        }
+        .form-section .link {
+            display: block;
+            text-align: right;
+            font-size: 13px;
+            color: #0078d7;
+            text-decoration: none;
+            margin-bottom: 10px;
+            margin-top: -10px;
+        }
+        .form-section .link:hover {
+            text-decoration: underline;
+        }
+        #loginLinks {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        #loginLinks a {
+            display: block;
+            margin-bottom: 10px;
+            color: #0078d7;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        #loginLinks a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" id="loginTab">Đăng nhập</div>
+            <div class="tab" id="registerTab">Đăng ký</div>
+        </div>
+        <div class="form-section active" id="loginSection">
+            <div class="message" id="loginMsg"></div>
+            <form id="loginForm" autocomplete="off">
+                <input type="text" id="loginUser" placeholder="Tên đăng nhập" required>
+                <input type="password" id="loginPass" placeholder="Mật khẩu" required>
+                <a href="#" class="link">Quên mật khẩu?</a>
+                <button type="submit">Đăng nhập</button>
+            </form>
+            <div id="loginLinks">
+                <a href="https://www.chess.com/home" target="_blank">1. Chess</a>
+                <a href="https://taphuan.nxbgd.vn/#/training-course-list/e9daef7a-d160-4d55-9dfe-d064e0448412/3a357090-4414-4326-ae0d-53cb7ac8f346/1" target="_blank">2. Sách</a>
+            </div>
+        </div>
+        <div class="form-section" id="registerSection">
+            <div class="message" id="registerMsg"></div>
+            <form id="registerForm" autocomplete="off">
+                <input type="text" id="regUser" placeholder="Tên đăng nhập" required>
+                <input type="email" id="regEmail" placeholder="Email" required>
+                <input type="password" id="regPass" placeholder="Mật khẩu" required>
+                <input type="password" id="regPass2" placeholder="Nhập lại mật khẩu" required>
+                <button type="submit">Đăng ký</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Tab switching
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginSection = document.getElementById('loginSection');
+        const registerSection = document.getElementById('registerSection');
+        loginTab.onclick = () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginSection.classList.add('active');
+            registerSection.classList.remove('active');
+        };
+        registerTab.onclick = () => {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerSection.classList.add('active');
+            loginSection.classList.remove('active');
+        };
+let users = [
+    { username: 'admin', password: '1234', email: 'admin@email.com' },
+    { username: 'hello', password: '12345', email: 'hello@email.com' } // tài khoản chung
+];
+        // Login
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            const msg = document.getElementById('loginMsg');
+            const links = document.getElementById('loginLinks');
+            const found = users.find(u => u.username === user && u.password === pass);
+            if (found) {
+                msg.textContent = 'Đăng nhập thành công!';
+                msg.classList.add('success');
+                msg.classList.remove('error');
+                links.style.display = 'block';
+            } else {
+                msg.textContent = 'Sai tên đăng nhập hoặc mật khẩu!';
+                msg.classList.remove('success');
+                msg.classList.add('error');
+                links.style.display = 'none';
+            }
+        };
+
+        // Register
+        document.getElementById('registerForm').onsubmit = function(e) {
+            e.preventDefault();
+            const user = document.getElementById('regUser').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPass').value;
+            const pass2 = document.getElementById('regPass2').value;
+            const msg = document.getElementById('registerMsg');
+            if (pass.length < 4) {
+                msg.textContent = 'Mật khẩu phải từ 4 ký tự trở lên!';
+                msg.classList.remove('success');
+                return;
+            }
+            if (pass !== pass2) {
+                msg.textContent = 'Mật khẩu nhập lại không khớp!';
+                msg.classList.remove('success');
+                return;
+            }
+            if (users.find(u => u.username === user)) {
+                msg.textContent = 'Tên đăng nhập đã tồn tại!';
+                msg.classList.remove('success');
+                return;
+            }
+            users.push({ username: user, password: pass, email: email });
+            msg.textContent = 'Đăng ký thành công! Bạn có thể đăng nhập.';
+            msg.classList.add('success');
+            setTimeout(() => {
+                loginTab.click();
+                document.getElementById('registerForm').reset();
+                msg.textContent = '';
+            }, 1500);
+        };
